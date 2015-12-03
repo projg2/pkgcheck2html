@@ -5,6 +5,7 @@
 import datetime
 import io
 import os
+import os.path
 import sys
 import xml.etree.ElementTree
 
@@ -103,7 +104,8 @@ def get_result_timestamp(paths):
 
 
 def main(*input_paths):
-    jenv = jinja2.Environment(loader=jinja2.FileSystemLoader('.'),
+    jenv = jinja2.Environment(
+            loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
             extensions=['jinja2htmlcompress.HTMLCompress'])
     t = jenv.get_template('output.html.jinja')
 
