@@ -127,7 +127,7 @@ def main(*input_paths):
             ts = get_result_timestamp(input_paths),
         ))
 
-    with io.open('borked.list', 'w', encoding='utf8') as f:
+    with open('borked.list', 'w') as f:
         for g in find_of_class(results, 'err'):
             f.write('output.html#%s/%s\n' % g[:2])
 
