@@ -2,6 +2,7 @@
 # vim:se fileencoding=utf8 :
 # (c) 2015 Michał Górny
 
+import io
 import sys
 import xml.etree.ElementTree
 
@@ -106,9 +107,10 @@ def main(*input_paths):
         if cl not in types:
             types[cl] = 0
         types[cl] += 1
-    print(sorted(types.items(), key=lambda x:x[1]), file=sys.stderr)
+    #print(sorted(types.items(), key=lambda x:x[1]), file=sys.stderr)
 
-    print(t.render(
+    with io.open('output.html', 'w', encoding='utf8') as f:
+        f.write(t.render(
             results = deep_group(results),
             warnings = find_of_class(results, 'warn'),
             errors = find_of_class(results, 'err'),
