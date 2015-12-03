@@ -32,7 +32,7 @@ h3
 {
 	font-weight: normal;
 	text-decoration: underline;
-	margin-left: 2em;
+	padding-left: 2em;
 }
 
 table
@@ -47,6 +47,26 @@ th.heading
 
 td
 {
-	background: #ddd;
+	background: #eee;
 	border: .5em solid transparent;
+}
+
+.err td
+{
+	background: #edd;
+}
+
+.warn td
+{
+	background: #eed;
+}
+
+h2 small, h3 small
+{
+	padding-left: .5em;
+}
+
+h2:target, h3:target
+{
+	background: #dfd;
 }

@@ -8,12 +8,35 @@ import xml.etree.ElementTree
 import jinja2
 
 
+class_mapping = {
+    "NonsolvableDeps": 'err',
+    "IUSEMetadataReport": 'err',
+    "LicenseMetadataReport": 'err',
+    "MissingManifest": 'err',
+    "VisibilityReport": 'err',
+    "UnknownManifest": 'err',
+    "MetadataError": 'warn',
+    "DroppedKeywordsReport": 'warn',
+    "TreeVulnerabilitiesReport": 'warn',
+    "DescriptionReport": 'warn',
+    "UnusedLocalFlagsReport": 'warn',
+    "CategoryMetadataXmlCheck": 'warn',
+    "PackageMetadataXmlCheck": 'warn',
+    "PkgDirReport": 'warn',
+    "UnusedGlobalFlagsResult": 'warn',
+}
+
+
 class Result(object):
     def __init__(self, el):
         self._el = el
 
     def __getattr__(self, key):
         return self._el.findtext(key) or ''
+
+    @property
+    def css_class(self):
+        return class_mapping.get(getattr(self, 'class'), '')
 
 
 def result_sort_key(r):
