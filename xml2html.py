@@ -96,7 +96,7 @@ def find_of_class(it, cls, level = 2):
 def main(*input_paths):
     jenv = jinja2.Environment(loader=jinja2.FileSystemLoader('.'),
             extensions=['jinja2htmlcompress.HTMLCompress'])
-    t = jenv.get_template('output.html')
+    t = jenv.get_template('output.html.jinja')
 
     results = sorted(get_results(input_paths), key=result_sort_key)
 
