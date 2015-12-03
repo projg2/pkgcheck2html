@@ -44,7 +44,7 @@
 							<tr class="{{ rx.css_class }}">
 								<td>{{ g[2] if loop.index == 1 else "" }}</td>
 								<td>{{ rx.class }}</td>
-								<td>{{ rx.msg }}</td>
+								<td>{{ rx.msg|escape }}</td>
 							</tr>
 						{% endfor %}
 					{% endfor %}
