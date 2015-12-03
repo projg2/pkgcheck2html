@@ -85,12 +85,34 @@ def deep_group(it, level = 1):
             yield (g, deep_group(r, level+1))
 
 
+def find_of_class(it, cls, level = 2):
+    for g, r in group_results(it, level):
+        for x in r:
+            if x.css_class == cls:
+                yield g
+            break
+
+
 def main(*input_paths):
-    jenv = jinja2.Environment(loader=jinja2.FileSystemLoader('.'))
+    jenv = jinja2.Environment(loader=jinja2.FileSystemLoader('.'),
+            extensions=['jinja2htmlcompress.HTMLCompress'])
     t = jenv.get_template('output.html')
 
-    print(t.render(results = deep_group(
-        sorted(get_results(input_paths), key=result_sort_key))))
+    results = sorted(get_results(input_paths), key=result_sort_key)
+
+    types = {}
+    for r in results:
+        cl = getattr(r, 'class')
+        if cl not in types:
+            types[cl] = 0
+        types[cl] += 1
+    print(sorted(types.items(), key=lambda x:x[1]), file=sys.stderr)
+
+    print(t.render(
+            results = deep_group(results),
+            warnings = find_of_class(results, 'warn'),
+            errors = find_of_class(results, 'err'),
+        ))
 
 
 if __name__ == '__main__':
