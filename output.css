@@ -82,3 +82,10 @@ h2:target, h3:target
 {
 	background: #dfd;
 }
+
+address
+{
+	margin-top: 1em;
+	font-size: 75%;
+	text-align: center;
+}

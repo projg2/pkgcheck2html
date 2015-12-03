@@ -2,7 +2,9 @@
 # vim:se fileencoding=utf8 :
 # (c) 2015 Michał Górny
 
+import datetime
 import io
+import os
 import sys
 import xml.etree.ElementTree
 
@@ -94,6 +96,12 @@ def find_of_class(it, cls, level = 2):
                 break
 
 
+def get_result_timestamp(paths):
+    for p in paths:
+        st = os.stat(p)
+        return datetime.datetime.utcfromtimestamp(st.st_mtime)
+
+
 def main(*input_paths):
     jenv = jinja2.Environment(loader=jinja2.FileSystemLoader('.'),
             extensions=['jinja2htmlcompress.HTMLCompress'])
@@ -114,6 +122,7 @@ def main(*input_paths):
             results = deep_group(results),
             warnings = find_of_class(results, 'warn'),
             errors = find_of_class(results, 'err'),
+            ts = get_result_timestamp(input_paths),
         ))
 
     with io.open('borked.list', 'w', encoding='utf8') as f:
