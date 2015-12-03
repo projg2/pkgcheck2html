@@ -91,7 +91,7 @@ def find_of_class(it, cls, level = 2):
         for x in r:
             if x.css_class == cls:
                 yield g
-            break
+                break
 
 
 def main(*input_paths):
@@ -115,6 +115,10 @@ def main(*input_paths):
             warnings = find_of_class(results, 'warn'),
             errors = find_of_class(results, 'err'),
         ))
+
+    with io.open('borked.list', 'w', encoding='utf8') as f:
+        for g in find_of_class(results, 'err'):
+            f.write('output.html#%s/%s\n' % g[:2])
 
 
 if __name__ == '__main__':
