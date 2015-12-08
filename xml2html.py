@@ -2,6 +2,7 @@
 # vim:se fileencoding=utf8 :
 # (c) 2015 Michał Górny
 
+import argparse
 import datetime
 import io
 import os
@@ -103,13 +104,22 @@ def get_result_timestamp(paths):
         return datetime.datetime.utcfromtimestamp(st.st_mtime)
 
 
-def main(*input_paths):
+def main(*args):
+    p = argparse.ArgumentParser()
+    p.add_argument('-o', '--output', default='output.html',
+            help='Output HTML file')
+    p.add_argument('-b', '--borked', default='borked.list',
+            help='Output borked.list file')
+    p.add_argument('files', nargs='+',
+            help='Input XML files')
+    args = p.parse_args(args)
+
     jenv = jinja2.Environment(
             loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
             extensions=['jinja2htmlcompress.HTMLCompress'])
     t = jenv.get_template('output.html.jinja')
 
-    results = sorted(get_results(input_paths), key=result_sort_key)
+    results = sorted(get_results(args.files), key=result_sort_key)
 
     types = {}
     for r in results:
@@ -119,15 +129,15 @@ def main(*input_paths):
         types[cl] += 1
     #print(sorted(types.items(), key=lambda x:x[1]), file=sys.stderr)
 
-    with io.open('output.html', 'w', encoding='utf8') as f:
+    with io.open(args.output, 'w', encoding='utf8') as f:
         f.write(t.render(
             results = deep_group(results),
             warnings = find_of_class(results, 'warn'),
             errors = find_of_class(results, 'err'),
-            ts = get_result_timestamp(input_paths),
+            ts = get_result_timestamp(args.files),
         ))
 
-    with open('borked.list', 'w') as f:
+    with open(args.borked, 'w') as f:
         for g in find_of_class(results, 'err'):
             f.write('output.html#%s/%s\n' % g[:2])
 
