@@ -29,7 +29,6 @@ class_mapping = {
     "PackageMetadataXmlCheck": 'warn',
     "PkgDirReport": 'warn',
     "UnusedGlobalFlagsResult": 'warn',
-    "NonExistentDeps": 'warn',
 }
 
 
