@@ -171,6 +171,7 @@ tr.warn td:hover
 .nav li:hover
 {
 	min-width: 100%;
+	width: -moz-max-content;
 	width: max-content;
 }
 
