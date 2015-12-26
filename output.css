@@ -11,22 +11,6 @@ body
 	font-size: 14px;
 }
 
-h2, h3
-{
-	font-size: 120%;
-}
-
-h2:target, h3:target
-{
-	background-color: #dfd;
-}
-
-h3
-{
-	padding-left: 1em;
-	font-size: 110%;
-}
-
 address
 {
 	color: white;
@@ -95,10 +79,38 @@ h1 {
 	letter-spacing: .15em;
 }
 
-th.heading
+th
 {
-	color: #23457F;
 	text-align: left;
+	padding: 1em 0;
+	color: #23457F;
+}
+
+th.h2
+{
+	font-size: 120%;
+}
+
+th.h3
+{
+	padding-left: 1em;
+	font-size: 110%;
+}
+
+th:target
+{
+	background-color: #dfd;
+}
+
+th small
+{
+	padding-left: .5em;
+	visibility: hidden;
+}
+
+th:hover small
+{
+	visibility: visible;
 }
 
 td
@@ -164,15 +176,4 @@ tr.warn td:hover
 .nav a:hover
 {
 	color: white;
-}
-
-h2 small, h3 small
-{
-	padding-left: .5em;
-	visibility: hidden;
-}
-
-h2:hover small, h3:hover small
-{
-	visibility: visible;
 }
