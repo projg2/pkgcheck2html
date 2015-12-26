@@ -132,8 +132,8 @@ def main(*args):
     with io.open(args.output, 'w', encoding='utf8') as f:
         f.write(t.render(
             results = deep_group(results),
-            warnings = find_of_class(results, 'warn'),
-            errors = find_of_class(results, 'err'),
+            warnings = list(find_of_class(results, 'warn')),
+            errors = list(find_of_class(results, 'err')),
             ts = get_result_timestamp(args.files),
         ))
 
