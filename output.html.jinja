@@ -44,7 +44,11 @@
 
 						{% for g, r in r %}
 							{% for rx in r %}
-								<tr class="{{ rx.css_class }}">
+								{% set class_str = "" %}
+								{% if rx.css_class %}
+									{% set class_str = ' class="' + rx.css_class + '"' %}
+								{% endif %}
+								<tr{{ class_str }}>
 									<td>{{ g[2] if loop.index == 1 else "" }}</td>
 									<td>{{ rx.class }}</td>
 									<td>{{ rx.msg|escape }}</td>
