@@ -119,6 +119,7 @@ td
 	line-height: 2em;
 	font-size: 120%;
 	padding-left: .5em;
+	white-space: pre-wrap;
 }
 
 td:hover
