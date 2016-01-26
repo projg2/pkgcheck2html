@@ -31,6 +31,9 @@ class_mapping = {
     "CatBadlyFormedXml": 'err',
     "PkgInvalidXml": 'err',
     "CatInvalidXml": 'err',
+
+    # repo-mirror-ci pkgcheck fork specific
+    "PkgWrongProjectError": 'err',
 }
 
 
