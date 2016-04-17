@@ -25,10 +25,12 @@ class_mapping = {
     "TreeVulnerabilitiesReport": 'warn',
     "DescriptionReport": 'warn',
     "UnusedLocalFlagsReport": 'err',
-    "CategoryMetadataXmlCheck": 'warn',
-    "PackageMetadataXmlCheck": 'warn',
     "PkgDirReport": 'warn',
     "UnusedGlobalFlagsResult": 'warn',
+    "PkgBadlyFormedXml": 'err',
+    "CatBadlyFormedXml": 'err',
+    "PkgInvalidXml": 'err',
+    "CatInvalidXml": 'err',
 }
 
 
