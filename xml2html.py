@@ -141,7 +141,7 @@ def main(*args):
 
     with open(args.borked, 'w') as f:
         for g in find_of_class(results, 'err'):
-            f.write('output.html#%s/%s\n' % g[:2])
+            f.write('output.html#%s\n' % '/'.join(g[:2]))
 
 
 if __name__ == '__main__':
