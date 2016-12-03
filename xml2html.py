@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # vim:se fileencoding=utf8 :
-# (c) 2015 Michał Górny
+# (c) 2015-2016 Michał Górny
+# 2-clause BSD license
 
 import argparse
 import datetime
