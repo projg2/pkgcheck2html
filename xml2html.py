@@ -125,6 +125,8 @@ def main(*args):
             help='Output HTML file')
     p.add_argument('-b', '--borked', default='borked.list',
             help='Output borked.list file')
+    p.add_argument('-t', '--timestamp', default=None,
+            help='Timestamp for results (git ISO8601-like UTC)')
     p.add_argument('files', nargs='+',
             help='Input XML files')
     args = p.parse_args(args)
@@ -142,14 +144,18 @@ def main(*args):
         if cl not in types:
             types[cl] = 0
         types[cl] += 1
-    #print(sorted(types.items(), key=lambda x:x[1]), file=sys.stderr)
+
+    if args.timestamp is not None:
+        ts = datetime.datetime.strptime(args.timestamp, '%Y-%m-%d %H:%M:%S')
+    else:
+        ts = get_result_timestamp(args.files)
 
     with io.open(args.output, 'w', encoding='utf8') as f:
         f.write(t.render(
             results = deep_group(results),
             warnings = list(find_of_class(results, 'warn')),
             errors = list(find_of_class(results, 'err')),
-            ts = get_result_timestamp(args.files),
+            ts = ts,
         ))
 
     with open(args.borked, 'w') as f:
