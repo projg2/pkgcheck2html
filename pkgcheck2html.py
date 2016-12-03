@@ -6,6 +6,7 @@
 import argparse
 import datetime
 import io
+import json
 import os
 import os.path
 import sys
@@ -14,60 +15,28 @@ import xml.etree.ElementTree
 import jinja2
 
 
-class_mapping = {
-    "NonsolvableDeps": 'err',
-    "MissingManifest": 'err',
-    "UnknownManifest": 'err',
-    "ConflictingChksums": 'err',
-    "MetadataError": 'err',
-    "CrappyDescription": 'warn',
-    "UnusedLocalFlags": 'err',
-#    "UnusedGlobalFlags": 'warn',
-    "PkgBadlyFormedXml": 'err',
-    "CatBadlyFormedXml": 'err',
-    "PkgInvalidXml": 'err',
-    "CatInvalidXml": 'err',
-    "UnstatedIUSE": 'err',
-    "VisibleVcsPkg": 'err',
-#    "ExecutableFile": 'warn',
-    "MetadataLoadError": 'err',
-    "NoFinalNewline": 'err',
-    "WrongIndentFound": 'err',
-#    "WhitespaceFound": 'warn',
-    "MissingUri": 'warn',
-    "MissingChksum": 'warn',
-    "Glep31Violation": 'err',
-
-    # repo-mirror-ci pkgcheck fork specific
-    "PkgMetadataXmlInvalidPkgRef": 'err',
-    "CatMetadataXmlInvalidPkgRef": 'err',
-    "PkgMetadataXmlInvalidCatRef": 'err',
-    "CatMetadataXmlInvalidCatRef": 'err',
-    "PkgMetadataXmlInvalidProjectError": 'err',
-}
-
-
 class Result(object):
-    def __init__(self, el):
+    def __init__(self, el, class_mapping):
         self._el = el
+        self._class_mapping = class_mapping
 
     def __getattr__(self, key):
         return self._el.findtext(key) or ''
 
     @property
     def css_class(self):
-        return class_mapping.get(getattr(self, 'class'), '')
+        return self._class_mapping.get(getattr(self, 'class'), '')
 
 
 def result_sort_key(r):
     return (r.category, r.package, r.version, getattr(r, 'class'), r.msg)
 
 
-def get_results(input_paths):
+def get_results(input_paths, class_mapping):
     for input_path in input_paths:
         checks = xml.etree.ElementTree.parse(input_path).getroot()
         for r in checks:
-            yield Result(r)
+            yield Result(r, class_mapping)
 
 
 def split_result_group(it):
@@ -131,12 +100,16 @@ def main(*args):
             help='Input XML files')
     args = p.parse_args(args)
 
+    conf_path = os.path.join(os.path.dirname(__file__), 'pkgcheck2html.conf.json')
+    with io.open(conf_path, 'r', encoding='utf8') as f:
+        class_mapping = json.load(f)
+
     jenv = jinja2.Environment(
             loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
             extensions=['jinja2htmlcompress.HTMLCompress'])
     t = jenv.get_template('output.html.jinja')
 
-    results = sorted(get_results(args.files), key=result_sort_key)
+    results = sorted(get_results(args.files, class_mapping), key=result_sort_key)
 
     types = {}
     for r in results:
