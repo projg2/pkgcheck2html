@@ -122,7 +122,7 @@ def get_result_timestamp(paths):
 def main(*args):
     p = argparse.ArgumentParser()
     p.add_argument('-o', '--output', default='output.html',
-            help='Output HTML file')
+            help='Output HTML file ("-" for stdout)')
     p.add_argument('-b', '--borked', default='borked.list',
             help='Output borked.list file')
     p.add_argument('-t', '--timestamp', default=None,
@@ -150,13 +150,18 @@ def main(*args):
     else:
         ts = get_result_timestamp(args.files)
 
-    with io.open(args.output, 'w', encoding='utf8') as f:
-        f.write(t.render(
-            results = deep_group(results),
-            warnings = list(find_of_class(results, 'warn')),
-            errors = list(find_of_class(results, 'err')),
-            ts = ts,
-        ))
+    out = t.render(
+        results = deep_group(results),
+        warnings = list(find_of_class(results, 'warn')),
+        errors = list(find_of_class(results, 'err')),
+        ts = ts,
+    )
+
+    if args.output == '-':
+        sys.stdout.write(out)
+    else:
+        with io.open(args.output, 'w', encoding='utf8') as f:
+            f.write(out)
 
     with open(args.borked, 'w') as f:
         for g in find_of_class(results, 'err'):
