@@ -34,6 +34,8 @@ def result_sort_key(r):
 
 def get_results(input_paths, class_mapping):
     for input_path in input_paths:
+        if input_path == '-':
+            input_path = sys.stdin
         checks = xml.etree.ElementTree.parse(input_path).getroot()
         for r in checks:
             yield Result(r, class_mapping)
