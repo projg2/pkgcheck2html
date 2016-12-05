@@ -94,7 +94,7 @@ def main(*args):
     if args.output == '-':
         output_borked(sys.stdout, results)
     else:
-        with io.open(args.output, 'w', encoding='utf8') as f:
+        with open(args.output, 'w') as f:
             output_borked(f, results)
 
 
