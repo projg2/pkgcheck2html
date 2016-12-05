@@ -74,7 +74,7 @@ def find_of_class(it, cls, level = 2):
 
 def output_borked(f, results):
     for g in find_of_class(results, 'err'):
-        f.write('output.html#%s\n' % '/'.join(g[:2]))
+        f.write('%s\n' % '/'.join(g[:2]))
 
 
 def main(*args):
