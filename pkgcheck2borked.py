@@ -4,15 +4,12 @@
 # 2-clause BSD license
 
 import argparse
-import datetime
 import io
 import json
 import os
 import os.path
 import sys
 import xml.etree.ElementTree
-
-import jinja2
 
 
 class Result(object):
@@ -67,15 +64,6 @@ def group_results(it, level = 3):
     yield (prev_group, prev_l)
 
 
-def deep_group(it, level = 1):
-    for g, r in group_results(it, level):
-        if level > 3:
-            for x in r:
-                yield x
-        else:
-            yield (g, deep_group(r, level+1))
-
-
 def find_of_class(it, cls, level = 2):
     for g, r in group_results(it, level):
         for x in r:
@@ -84,18 +72,15 @@ def find_of_class(it, cls, level = 2):
                 break
 
 
-def get_result_timestamp(paths):
-    for p in paths:
-        st = os.stat(p)
-        return datetime.datetime.utcfromtimestamp(st.st_mtime)
+def output_borked(f, results):
+    for g in find_of_class(results, 'err'):
+        f.write('output.html#%s\n' % '/'.join(g[:2]))
 
 
 def main(*args):
     p = argparse.ArgumentParser()
     p.add_argument('-o', '--output', default='-',
-            help='Output HTML file ("-" for stdout)')
-    p.add_argument('-t', '--timestamp', default=None,
-            help='Timestamp for results (git ISO8601-like UTC)')
+            help='Output borked list file')
     p.add_argument('files', nargs='+',
             help='Input XML files')
     args = p.parse_args(args)
@@ -104,37 +89,13 @@ def main(*args):
     with io.open(conf_path, 'r', encoding='utf8') as f:
         class_mapping = json.load(f)
 
-    jenv = jinja2.Environment(
-            loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
-            extensions=['jinja2htmlcompress.HTMLCompress'])
-    t = jenv.get_template('output.html.jinja')
-
     results = sorted(get_results(args.files, class_mapping), key=result_sort_key)
 
-    types = {}
-    for r in results:
-        cl = getattr(r, 'class')
-        if cl not in types:
-            types[cl] = 0
-        types[cl] += 1
-
-    if args.timestamp is not None:
-        ts = datetime.datetime.strptime(args.timestamp, '%Y-%m-%d %H:%M:%S')
-    else:
-        ts = get_result_timestamp(args.files)
-
-    out = t.render(
-        results = deep_group(results),
-        warnings = list(find_of_class(results, 'warn')),
-        errors = list(find_of_class(results, 'err')),
-        ts = ts,
-    )
-
     if args.output == '-':
-        sys.stdout.write(out)
+        output_borked(sys.stdout, results)
     else:
         with io.open(args.output, 'w', encoding='utf8') as f:
-            f.write(out)
+            output_borked(f, results)
 
 
 if __name__ == '__main__':
