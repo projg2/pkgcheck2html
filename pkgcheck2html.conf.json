@@ -22,5 +22,6 @@
     "NoFinalNewline": "err",
     "UnstatedIUSE": "err",
     "MetadataError": "err",
-    "WrongIndentFound": "err"
+    "WrongIndentFound": "err",
+    "UnknownLicenses": "err"
 }
