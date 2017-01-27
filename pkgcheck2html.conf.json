@@ -23,5 +23,6 @@
     "UnstatedIUSE": "err",
     "MetadataError": "err",
     "WrongIndentFound": "err",
-    "UnknownLicenses": "err"
+    "UnknownLicenses": "err",
+    "UnnecessaryManifest": "err"
 }
