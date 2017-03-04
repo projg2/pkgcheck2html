@@ -24,5 +24,6 @@
     "MetadataError": "err",
     "WrongIndentFound": "err",
     "UnknownLicenses": "err",
-    "UnnecessaryManifest": "err"
+    "UnnecessaryManifest": "err",
+    "MissingLicense": "err"
 }
