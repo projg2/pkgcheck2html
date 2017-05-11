@@ -25,5 +25,7 @@
     "WrongIndentFound": "err",
     "UnknownLicenses": "err",
     "UnnecessaryManifest": "err",
-    "MissingLicense": "err"
+    "MissingLicense": "err",
+    "UnknownCategories": "err",
+    "PkgMissingMetadataXml": "err"
 }
