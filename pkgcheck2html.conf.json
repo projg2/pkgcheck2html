@@ -27,5 +27,7 @@
     "UnnecessaryManifest": "err",
     "MissingLicense": "err",
     "UnknownCategories": "err",
-    "PkgMissingMetadataXml": "err"
+    "PkgMissingMetadataXml": "err",
+    "DoubleEmptyLine": "err",
+    "TrailingEmptyLine": "err"
 }
