@@ -1,7 +1,7 @@
 {
     "CatMetadataXmlInvalidPkgRef": "err",
     "VisibleVcsPkg": "err",
-    "MissingUri": "warn",
+    "-- MissingUri": "warn",
     "CatBadlyFormedXml": "err",
     "Glep31Violation": "err",
     "PkgBadlyFormedXml": "err",
