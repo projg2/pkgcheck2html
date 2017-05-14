@@ -67,20 +67,25 @@ def group_results(it, level = 3):
 def find_of_class(it, cls, level = 2):
     for g, r in group_results(it, level):
         for x in r:
-            if x.css_class == cls:
+            if x.css_class in cls:
                 yield g
                 break
 
 
 def output_borked(f, results):
-    for g in find_of_class(results, 'err'):
+    for g in results:
         f.write('%s\n' % '/'.join(g[:2]))
 
 
 def main(*args):
     p = argparse.ArgumentParser()
+    p.add_argument('-e', '--error', action='store_true',
+            help='Output error class reports (the default unless --warning'
+                + ' is specified, can be combined with --warning)')
     p.add_argument('-o', '--output', default='-',
             help='Output borked list file')
+    p.add_argument('-w', '--warning', action='store_true',
+            help='Output warning class reports (can be combined with --error)')
     p.add_argument('files', nargs='+',
             help='Input XML files')
     args = p.parse_args(args)
@@ -89,7 +94,18 @@ def main(*args):
     with io.open(conf_path, 'r', encoding='utf8') as f:
         class_mapping = json.load(f)
 
+    cls = set()
+    if args.error:
+        cls.add('err')
+    if args.warning:
+        cls.add('warn')
+    # default to error
+    if not cls:
+        cls.add('err')
+
     results = sorted(get_results(args.files, class_mapping), key=result_sort_key)
+    # filter and group the results
+    results = find_of_class(results, cls)
 
     if args.output == '-':
         output_borked(sys.stdout, results)
