@@ -15,6 +15,7 @@
     "DeprecatedEclass": "", 
     "DoubleEmptyLine": "warn", 
     "DroppedKeywords": "", 
+    "EmptyFile": "warn", 
     "ExecutableFile": "", 
     "Glep31Violation": "warn", 
     "InvalidPN": "err", 
