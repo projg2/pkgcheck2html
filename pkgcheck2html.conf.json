@@ -9,6 +9,7 @@
     "CatMetadataXmlInvalidCatRef": "err", 
     "CatMetadataXmlInvalidPkgRef": "err", 
     "CatMissingMetadataXml": "warn", 
+    "ComplexRequiredUse": "warn", 
     "ConflictingChksums": "err", 
     "CrappyDescription": "warn", 
     "DeprecatedEAPI": "", 
