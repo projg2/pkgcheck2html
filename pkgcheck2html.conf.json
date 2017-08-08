@@ -19,7 +19,7 @@
     "ExecutableFile": "", 
     "GLEP73BackAlteration": "", 
     "GLEP73Conflict": "", 
-    "GLEP73Immutability": "", 
+    "GLEP73Immutability": "warn", 
     "GLEP73SelfConflicting": "warn", 
     "GLEP73Syntax": "warn", 
     "Glep31Violation": "warn", 
