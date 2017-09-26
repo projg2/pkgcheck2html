@@ -74,7 +74,7 @@ def find_of_class(it, cls, level = 2):
 
 def output_borked(f, results):
     for g in results:
-        f.write('%s\n' % '/'.join(g[:2]))
+        f.write('%s\n' % ('/'.join(g[:2]) if g else 'global'))
 
 
 def main(*args):
