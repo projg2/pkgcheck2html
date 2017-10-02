@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # vim:se fileencoding=utf8 :
-# (c) 2015-2016 Michał Górny
+# (c) 2015-2017 Michał Górny
 # 2-clause BSD license
 
 import argparse
@@ -126,6 +126,7 @@ def main(*args):
     out = t.render(
         results = deep_group(results),
         warnings = list(find_of_class(results, 'warn')),
+        staging = list(find_of_class(results, 'staging')),
         errors = list(find_of_class(results, 'err')),
         ts = ts,
     )

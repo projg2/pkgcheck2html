@@ -9,7 +9,7 @@
 	<body>
 		<h1>QA check results</h1>
 
-		{% if errors or warnings %}
+		{% if errors or warnings or staging %}
 			<div class="nav">
 				<h2>issues</h2>
 
@@ -19,6 +19,9 @@
 					{% endfor %}
 					{% for g in warnings %}
 						<li class="warn"><a href="#{{ g|join('/') }}">{{ g|join('/') }}</a></li>
+					{% endfor %}
+					{% for g in staging %}
+						<li class="staging"><a href="#{{ g|join('/') }}">{{ g|join('/') }}</a></li>
 					{% endfor %}
 				</ul>
 			</div>

@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # vim:se fileencoding=utf8 :
-# (c) 2015-2016 Michał Górny
+# (c) 2015-2017 Michał Górny
 # 2-clause BSD license
 
 import argparse
@@ -80,12 +80,14 @@ def output_borked(f, results):
 def main(*args):
     p = argparse.ArgumentParser()
     p.add_argument('-e', '--error', action='store_true',
-            help='Output error class reports (the default unless --warning'
-                + ' is specified, can be combined with --warning)')
+            help='Output error class reports (the default unless other option'
+                + ' is specified, can be combined with --staging --warning)')
     p.add_argument('-o', '--output', default='-',
             help='Output borked list file')
+    p.add_argument('-s', '--staging', action='store_true',
+            help='Output staging class reports (can be combined with --warning and --error)')
     p.add_argument('-w', '--warning', action='store_true',
-            help='Output warning class reports (can be combined with --error)')
+            help='Output warning class reports (can be combined with --staging and --error)')
     p.add_argument('files', nargs='+',
             help='Input XML files')
     args = p.parse_args(args)
@@ -97,6 +99,8 @@ def main(*args):
     cls = set()
     if args.error:
         cls.add('err')
+    if args.staging:
+        cls.add('staging')
     if args.warning:
         cls.add('warn')
     # default to error
