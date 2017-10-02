@@ -53,7 +53,7 @@
     "PkgMissingMetadataXml": "warn", 
     "RedundantVersion": "", 
     "RequiredUseDefaults": "", 
-    "SizeViolation": "", 
+    "SizeViolation": "staging", 
     "StaleUnstable": "", 
     "StupidKeywords": "warn", 
     "TrailingEmptyLine": "warn", 
