@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # vim:se fileencoding=utf8 :
-# (c) 2015-2016 Michał Górny
+# (c) 2015-2017 Michał Górny
 # 2-clause BSD license
 
 import json
@@ -9,7 +9,7 @@ import sys
 
 
 def main(json_path):
-    s = subprocess.Popen(['pkgcheck', '--list-keywords'],
+    s = subprocess.Popen(['pkgcheck', 'show', '--keywords'],
             stdout=subprocess.PIPE)
     sout, serr = s.communicate()
     all_classes = sout.decode().split()
