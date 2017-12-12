@@ -35,7 +35,7 @@
     "LaggingStable": "", 
     "MetadataError": "err", 
     "MismatchedPN": "warn", 
-    "MissingChksum": "warn", 
+    "MissingChksum": "staging", 
     "MissingLicense": "err", 
     "MissingManifest": "err", 
     "MissingSlotDep": "", 
