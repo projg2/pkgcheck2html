@@ -14,14 +14,23 @@
 				<h2>issues</h2>
 
 				<ul>
-					{% for g in errors %}
-						<li class="err"><a href="#{{ g|join('/') }}">{{ g|join('/') }}</a></li>
+					{% for g, pkgs in errors %}
+						<li class="err heading">{{ g }}</li>
+						{% for pkg in pkgs %}
+							<li class="err"><a href="#{{ g|join('/') }}">{{ g|join('/') }}</a></li>
+						{% endfor %}
 					{% endfor %}
-					{% for g in warnings %}
-						<li class="warn"><a href="#{{ g|join('/') }}">{{ g|join('/') }}</a></li>
+					{% for g, pkgs in warnings %}
+						<li class="warn heading">{{ g }}</li>
+						{% for pkg in pkgs %}
+							<li class="warn"><a href="#{{ g|join('/') }}">{{ g|join('/') }}</a></li>
+						{% endfor %}
 					{% endfor %}
-					{% for g in staging %}
-						<li class="staging"><a href="#{{ g|join('/') }}">{{ g|join('/') }}</a></li>
+					{% for g, pkgs in staging %}
+						<li class="staging heading">{{ g }}</li>
+						{% for pkg in pkgs %}
+							<li class="staging"><a href="#{{ pkg|join('/') }}">{{ pkg|join('/') }}</a></li>
+						{% endfor %}
 					{% endfor %}
 				</ul>
 			</div>

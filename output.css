@@ -171,6 +171,14 @@ tr.warn td:hover
 	text-overflow: ellipsis;
 }
 
+li.heading
+{
+	font-size: 125%;
+	color: white;
+	background-color: #463C65;
+	padding-left: .75em;
+}
+
 .warn a
 {
 	color: orange;

@@ -4,6 +4,7 @@
 # 2-clause BSD license
 
 import argparse
+import collections
 import datetime
 import io
 import json
@@ -77,11 +78,14 @@ def deep_group(it, level = 1):
 
 
 def find_of_class(it, cls, level = 2):
+    out = collections.defaultdict(set)
+
     for g, r in group_results(it, level):
         for x in r:
             if x.css_class == cls:
-                yield g
-                break
+                out[getattr(x, 'class')].add(g)
+
+    return [(k, sorted(v)) for k, v in sorted(out.items())]
 
 
 def get_result_timestamp(paths):
@@ -125,9 +129,9 @@ def main(*args):
 
     out = t.render(
         results = deep_group(results),
-        warnings = list(find_of_class(results, 'warn')),
-        staging = list(find_of_class(results, 'staging')),
-        errors = list(find_of_class(results, 'err')),
+        warnings = find_of_class(results, 'warn'),
+        staging = find_of_class(results, 'staging'),
+        errors = find_of_class(results, 'err'),
         ts = ts,
     )
 
