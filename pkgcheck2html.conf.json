@@ -16,6 +16,7 @@
     "CatMissingMetadataXml": "warn", 
     "ConflictingChksums": "err", 
     "CrappyDescription": "warn", 
+    "DeprecatedChksum": "staging", 
     "DeprecatedEAPI": "", 
     "DeprecatedEclass": "", 
     "DirectorySizeViolation": "staging", 
