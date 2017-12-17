@@ -18,7 +18,7 @@
     "CrappyDescription": "warn", 
     "DeprecatedEAPI": "", 
     "DeprecatedEclass": "", 
-    "DirectorySizeViolation": "warn", 
+    "DirectorySizeViolation": "staging", 
     "DoubleEmptyLine": "warn", 
     "DroppedKeywords": "", 
     "DuplicateFiles": "", 
