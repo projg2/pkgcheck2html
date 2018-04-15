@@ -56,7 +56,7 @@
     "OldPackageUpdate": "warn", 
     "PkgBadlyFormedXml": "warn", 
     "PkgInvalidXml": "warn", 
-    "PkgMetadataXmlEmptyElement": "staging", 
+    "PkgMetadataXmlEmptyElement": "warn", 
     "PkgMetadataXmlIndentation": "", 
     "PkgMetadataXmlInvalidCatRef": "warn", 
     "PkgMetadataXmlInvalidPkgRef": "warn", 
