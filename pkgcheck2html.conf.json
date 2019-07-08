@@ -1,7 +1,7 @@
 {
     "AbsoluteSymlink": "",
     "ArchesWithoutProfiles": "",
-    "BadDescription": "warn",
+    "BadDescription": "staging",
     "BadFilename": "warn",
     "BadInsIntoDir": "",
     "BadPackageUpdate": "err",
