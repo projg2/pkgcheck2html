@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # vim:se fileencoding=utf8 :
-# (c) 2015-2017 Michał Górny
+# (c) 2015-2019 Michał Górny
 # 2-clause BSD license
 
 import argparse
@@ -30,7 +30,7 @@ class Result(object):
 
 
 def result_sort_key(r):
-    return (r.category, r.package, r.version, getattr(r, 'class'), r.msg)
+    return (r.category, r.package, r.version, getattr(r, 'class'))
 
 
 def get_results(input_paths, class_mapping):
