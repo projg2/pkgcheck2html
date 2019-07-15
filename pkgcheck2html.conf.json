@@ -91,7 +91,7 @@
     "UnknownProfileUse": "",
     "UnnecessaryManifest": "warn",
     "UnnecessarySlashStrip": "",
-    "UnsortedKeywords": "",
+    "UnsortedKeywords": "warn",
     "UnstableOnly": "",
     "UnstatedIUSE": "err",
     "UnusedEclasses": "",
