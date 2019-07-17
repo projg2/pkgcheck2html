@@ -28,18 +28,25 @@ class Result(object):
     def css_class(self):
         return self._class_mapping.get(getattr(self, 'class'), '')
 
+    @property
+    def verbose(self):
+        return self.css_class == 'verbose'
+
 
 def result_sort_key(r):
     return (r.category, r.package, r.version, getattr(r, 'class'))
 
 
-def get_results(input_paths, class_mapping):
+def get_results(input_paths, class_mapping, verbose):
     for input_path in input_paths:
         if input_path == '-':
             input_path = sys.stdin
         checks = xml.etree.ElementTree.parse(input_path).getroot()
         for r in checks:
-            yield Result(r, class_mapping)
+            r = Result(r, class_mapping)
+            if r.verbose and not verbose:
+                continue
+            yield r
 
 
 def split_result_group(it):
@@ -100,6 +107,8 @@ def main(*args):
             help='Output HTML file ("-" for stdout)')
     p.add_argument('-t', '--timestamp', default=None,
             help='Timestamp for results (git ISO8601-like UTC)')
+    p.add_argument('-v', '--verbose', action='store_true',
+            help='Enable verbose reports')
     p.add_argument('files', nargs='+',
             help='Input XML files')
     args = p.parse_args(args)
@@ -113,7 +122,8 @@ def main(*args):
             extensions=['jinja2htmlcompress.HTMLCompress'])
     t = jenv.get_template('output.html.jinja')
 
-    results = sorted(get_results(args.files, class_mapping), key=result_sort_key)
+    results = sorted(get_results(args.files, class_mapping, args.verbose),
+                     key=result_sort_key)
 
     types = {}
     for r in results:
