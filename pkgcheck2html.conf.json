@@ -39,7 +39,7 @@
     "MismatchedPN": "warn",
     "MissingChksum": "warn",
     "MissingLicense": "err",
-    "MissingMaintainer": "verbose",
+    "MissingMaintainer": "staging",
     "MissingManifest": "err",
     "MissingRevision": "",
     "MissingSlash": "",
