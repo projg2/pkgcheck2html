@@ -6,6 +6,7 @@
 import argparse
 import collections
 import datetime
+import email.utils
 import io
 import json
 import os
@@ -101,10 +102,31 @@ def get_result_timestamp(paths):
         return datetime.datetime.utcfromtimestamp(st.st_mtime)
 
 
+def format_maint(el):
+    return el.findtext('email').replace('@gentoo.org', '@g.o')
+
+
+class MaintainerGetter(object):
+    def __init__(self, repo):
+        self.repo = repo
+
+    def __getitem__(self, k):
+        p = os.path.join(self.repo, k, 'metadata.xml')
+        try:
+            metadata = xml.etree.ElementTree.parse(p).getroot()
+        except OSError:
+            return None
+
+        maints = [format_maint(x) for x in metadata.findall('maintainer')]
+        return ', '.join(maints) if maints else '(maintainer-needed)'
+
+
 def main(*args):
     p = argparse.ArgumentParser()
     p.add_argument('-o', '--output', default='-',
             help='Output HTML file ("-" for stdout)')
+    p.add_argument('-r', '--repo', default='/usr/portage',
+            help='Repository path to get metadata.xml from')
     p.add_argument('-t', '--timestamp', default=None,
             help='Timestamp for results (git ISO8601-like UTC)')
     p.add_argument('-v', '--verbose', action='store_true',
@@ -143,6 +165,7 @@ def main(*args):
         staging = find_of_class(results, 'staging'),
         errors = find_of_class(results, 'err'),
         ts = ts,
+        maints = MaintainerGetter(args.repo),
     )
 
     if args.output == '-':
