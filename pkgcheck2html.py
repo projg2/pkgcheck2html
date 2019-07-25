@@ -38,7 +38,7 @@ def result_sort_key(r):
     return (r.category, r.package, r.version, getattr(r, 'class'))
 
 
-def get_results(input_paths, class_mapping, verbose):
+def get_results(input_paths, class_mapping, verbose, pkg_filter):
     for input_path in input_paths:
         if input_path == '-':
             input_path = sys.stdin
@@ -46,6 +46,8 @@ def get_results(input_paths, class_mapping, verbose):
         for r in checks:
             r = Result(r, class_mapping)
             if r.verbose and not verbose:
+                continue
+            if not pkg_filter(r):
                 continue
             yield r
 
@@ -115,14 +117,16 @@ class MaintainerGetter(object):
         try:
             metadata = xml.etree.ElementTree.parse(p).getroot()
         except OSError:
-            return None
+            return []
 
         maints = [format_maint(x) for x in metadata.findall('maintainer')]
-        return ', '.join(maints) if maints else '(maintainer-needed)'
+        return maints if maints else ['maintainer-needed']
 
 
 def main(*args):
     p = argparse.ArgumentParser()
+    p.add_argument('-m', '--maintainer',
+            help='Filter by maintainer (dev, dev@g.o or full e-mail address)')
     p.add_argument('-o', '--output', default='-',
             help='Output HTML file ("-" for stdout)')
     p.add_argument('-r', '--repo', default='/usr/portage',
@@ -144,7 +148,18 @@ def main(*args):
             extensions=['jinja2htmlcompress.HTMLCompress'])
     t = jenv.get_template('output.html.jinja')
 
-    results = sorted(get_results(args.files, class_mapping, args.verbose),
+    maints = MaintainerGetter(args.repo)
+    maint_filter = lambda x: True
+    if args.maintainer:
+        if not '@' in args.maintainer:
+            args.maintainer += '@g.o'
+        else:
+            args.maintainer = args.maintainer.replace('@gentoo.org', '@g.o')
+        maint_filter = lambda x: (args.maintainer
+                                  in maints['/'.join((x.category, x.package))])
+
+    results = sorted(get_results(args.files, class_mapping, args.verbose,
+                                 pkg_filter=maint_filter),
                      key=result_sort_key)
 
     types = {}
@@ -160,12 +175,12 @@ def main(*args):
         ts = get_result_timestamp(args.files)
 
     out = t.render(
-        results = deep_group(results),
-        warnings = find_of_class(results, 'warn'),
-        staging = find_of_class(results, 'staging'),
-        errors = find_of_class(results, 'err'),
-        ts = ts,
-        maints = MaintainerGetter(args.repo),
+        results=deep_group(results),
+        warnings=find_of_class(results, 'warn'),
+        staging=find_of_class(results, 'staging'),
+        errors=find_of_class(results, 'err'),
+        ts=ts,
+        maints=maints,
     )
 
     if args.output == '-':

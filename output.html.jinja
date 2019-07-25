@@ -56,7 +56,7 @@
 								{% set maint = maints[h3_id] %}
 								{% if maint %}
 									<tr><th colspan="3" class="maint">
-										Maintainer: {{ maints[h3_id] | escape }}
+										Maintainer: {{ maints[h3_id] | join(', ') | escape }}
 									</th></tr>
 								{% endif %}
 							{% endif %}
