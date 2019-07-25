@@ -108,6 +108,30 @@ def format_maint(el):
     return el.findtext('email').replace('@gentoo.org', '@g.o')
 
 
+class ProjectGetter(object):
+    def __init__(self, projects_xml):
+        self.projects = xml.etree.ElementTree.parse(projects_xml).getroot()
+
+    def find_projects_for_maintainer(self, m):
+        for x in self.projects.findall('project'):
+            members = frozenset(self[x.findtext('email')])
+            if m in members:
+                yield x.findtext('email')
+
+    def __getitem__(self, k):
+        for x in self.projects.findall('project'):
+            if x.findtext('email') == k:
+                # project members
+                for m in x.findall('member'):
+                    yield m.findtext('email')
+
+                # inherited subproject members
+                for sp in x.findall('subproject'):
+                    if sp.get('inherit-members') == '1':
+                        for m in self[sp.get('ref')]:
+                            yield m
+
+
 class MaintainerGetter(object):
     def __init__(self, repo):
         self.repo = repo
@@ -129,6 +153,8 @@ def main(*args):
             help='Filter by maintainer (dev, dev@g.o or full e-mail address)')
     p.add_argument('-o', '--output', default='-',
             help='Output HTML file ("-" for stdout)')
+    p.add_argument('-p', '--projects', action='store_true',
+            help='Recursively match projects whose member is maintainer')
     p.add_argument('-r', '--repo', default='/usr/portage',
             help='Repository path to get metadata.xml from')
     p.add_argument('-t', '--timestamp', default=None,
@@ -152,11 +178,20 @@ def main(*args):
     maint_filter = lambda x: True
     if args.maintainer:
         if not '@' in args.maintainer:
-            args.maintainer += '@g.o'
-        else:
-            args.maintainer = args.maintainer.replace('@gentoo.org', '@g.o')
-        maint_filter = lambda x: (args.maintainer
-                                  in maints['/'.join((x.category, x.package))])
+            args.maintainer += '@gentoo.org'
+        elif args.maintainer.endswith('@g.o'):
+            args.maintainer = args.maintainer.replace('@g.o', '@gentoo.org')
+
+        match = [args.maintainer]
+        if args.projects:
+            projects = ProjectGetter(os.path.join(args.repo, 'metadata',
+                                                  'projects.xml'))
+            match.extend(
+                    projects.find_projects_for_maintainer(args.maintainer))
+
+        match = frozenset([x.replace('@gentoo.org', '@g.o') for x in match])
+        maint_filter = lambda x: (bool(match.intersection(
+            maints['/'.join((x.category, x.package))])))
 
     results = sorted(get_results(args.files, class_mapping, args.verbose,
                                  pkg_filter=maint_filter),
