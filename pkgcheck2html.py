@@ -150,7 +150,7 @@ class MaintainerGetter(object):
 def main(*args):
     p = argparse.ArgumentParser()
     # target: https://pkgcheck.readthedocs.io/en/latest/man/pkgcheck.html
-    p.add_argument('-d', '--doc-uri', default='https://bit.ly/2Kb0512',
+    p.add_argument('-d', '--doc-uri', default='https://bit.ly/2LJlamg',
             help='Documentation URI to use for help links')
     p.add_argument('-m', '--maintainer',
             help='Filter by maintainer (dev, dev@g.o or full e-mail address)')
