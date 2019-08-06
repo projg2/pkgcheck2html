@@ -9,7 +9,7 @@ import json
 import os
 import os.path
 import sys
-import xml.etree.ElementTree
+import lxml.etree
 
 
 class Result(object):
@@ -33,7 +33,7 @@ def get_results(input_paths, class_mapping):
     for input_path in input_paths:
         if input_path == '-':
             input_path = sys.stdin
-        checks = xml.etree.ElementTree.parse(input_path).getroot()
+        checks = lxml.etree.parse(input_path).getroot()
         for r in checks:
             yield Result(r, class_mapping)
 

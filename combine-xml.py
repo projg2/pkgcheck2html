@@ -3,12 +3,12 @@
 # (c) 2016 Michał Górny
 
 import sys
-import xml.etree.ElementTree
+import lxml.etree
 
 
 def get_trees(paths):
     for input_path in paths:
-        yield xml.etree.ElementTree.parse(input_path)
+        yield lxml.etree.parse(input_path)
 
 
 def main(*args):

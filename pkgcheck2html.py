@@ -12,7 +12,7 @@ import json
 import os
 import os.path
 import sys
-import xml.etree.ElementTree
+import lxml.etree
 
 import jinja2
 
@@ -42,7 +42,7 @@ def get_results(input_paths, class_mapping, verbose, pkg_filter):
     for input_path in input_paths:
         if input_path == '-':
             input_path = sys.stdin
-        checks = xml.etree.ElementTree.parse(input_path).getroot()
+        checks = lxml.etree.parse(input_path).getroot()
         for r in checks:
             r = Result(r, class_mapping)
             if r.verbose and not verbose:
@@ -110,7 +110,7 @@ def format_maint(el):
 
 class ProjectGetter(object):
     def __init__(self, projects_xml):
-        self.projects = xml.etree.ElementTree.parse(projects_xml).getroot()
+        self.projects = lxml.etree.parse(projects_xml).getroot()
 
     def find_projects_for_maintainer(self, m):
         for x in self.projects.findall('project'):
@@ -139,7 +139,7 @@ class MaintainerGetter(object):
     def __getitem__(self, k):
         p = os.path.join(self.repo, k, 'metadata.xml')
         try:
-            metadata = xml.etree.ElementTree.parse(p).getroot()
+            metadata = lxml.etree.parse(p).getroot()
         except OSError:
             return []
 
