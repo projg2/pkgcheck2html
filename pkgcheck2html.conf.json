@@ -61,6 +61,7 @@
     "MovedPackageUpdate": "err",
     "MultiMovePackageUpdate": "warn",
     "NoFinalNewline": "warn",
+    "NonGentooAuthorsCopyright": "staging",
     "NonexistentBlocker": "",
     "NonexistentDeps": "",
     "NonexistentProfilePath": "err",
