@@ -42,7 +42,7 @@
     "InvalidUTF8": "err",
     "LaggingProfileEAPI": "",
     "LaggingStable": "verbose",
-    "MaintainerWithoutProxy": "warn",
+    "MaintainerWithoutProxy": "staging",
     "MatchingGlobalUSE": "staging",
     "MetadataError": "err",
     "MismatchedPN": "warn",
@@ -65,6 +65,7 @@
     "NonexistentBlocker": "",
     "NonexistentDeps": "",
     "NonexistentProfilePath": "err",
+    "NonexistentProjectMaintainer": "staging",
     "NonsolvableDeps": "err",
     "NonsolvableDepsInDev": "warn",
     "NonsolvableDepsInExp": "",
@@ -132,5 +133,6 @@
     "VisibleVcsPkg": "err",
     "VulnerablePackage": "",
     "WhitespaceFound": "",
-    "WrongIndentFound": "warn"
+    "WrongIndentFound": "warn",
+    "WrongMaintainerType": "warn"
 }
