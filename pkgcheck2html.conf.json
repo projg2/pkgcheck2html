@@ -52,7 +52,7 @@
     "MissingManifest": "err",
     "MissingPackageRevision": "",
     "MissingPythonEclass": "staging",
-    "MissingSlash": "",
+    "MissingSlash": "staging",
     "MissingSlotDep": "",
     "MissingUnpackerDep": "",
     "MissingUri": "",
