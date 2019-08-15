@@ -185,14 +185,17 @@ def main(*args):
         elif args.maintainer.endswith('@g.o'):
             args.maintainer = args.maintainer.replace('@g.o', '@gentoo.org')
 
-        match = [args.maintainer]
-        if args.projects:
-            projects = ProjectGetter(os.path.join(args.repo, 'metadata',
-                                                  'projects.xml'))
-            match.extend(
-                    projects.find_projects_for_maintainer(args.maintainer))
+        if args.maintainer != 'maintainer-needed@gentoo.org':
+            match = [args.maintainer]
+            if args.projects:
+                projects = ProjectGetter(os.path.join(args.repo, 'metadata',
+                                                      'projects.xml'))
+                match.extend(
+                        projects.find_projects_for_maintainer(args.maintainer))
 
-        match = frozenset([x.replace('@gentoo.org', '@g.o') for x in match])
+            match = frozenset([x.replace('@gentoo.org', '@g.o') for x in match])
+        else:
+            match = frozenset(['maintainer-needed'])
         maint_filter = lambda x: (bool(match.intersection(
             maints['/'.join((x.category, x.package))])))
 
