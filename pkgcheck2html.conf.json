@@ -123,6 +123,7 @@
     "UnnecessarySlashStrip": "",
     "UnsortedKeywords": "warn",
     "UnstableOnly": "verbose",
+    "UnstatedIUSE": "err",
     "UnusedEclasses": "",
     "UnusedGlobalUSE": "",
     "UnusedInMastersEclasses": "",
