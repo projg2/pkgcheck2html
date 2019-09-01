@@ -186,12 +186,17 @@ li.heading
 	padding-left: .75em;
 }
 
-.warn a
+li.warn a
 {
 	color: orange;
 }
 
-.err a
+li.staging a
+{
+	color: #DEDE00;
+}
+
+li.err a
 {
 	color: #F06F74;
 }
