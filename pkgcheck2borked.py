@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # vim:se fileencoding=utf8 :
-# (c) 2015-2017 Michał Górny
+# (c) 2015-2019 Michał Górny
 # 2-clause BSD license
 
 import argparse
@@ -12,30 +12,44 @@ import sys
 import lxml.etree
 
 
-class Result(object):
-    def __init__(self, el, class_mapping):
-        self._el = el
+class ClassMapping(object):
+    def __init__(self, class_mapping, excludes):
         self._class_mapping = class_mapping
+        self._excludes = excludes
+
+    def map(self, el):
+        cls, cat, pkg, ver = (el.findtext(x, '')
+                for x in ('class', 'category', 'package', 'version'))
+        if cls in self._excludes.get(cat, {}).get(pkg, {}).get(ver, []):
+            return ''
+        return self._class_mapping.get(cls, '')
+
+
+class Result(object):
+    def __init__(self, el, class_mapper):
+        self._el = el
+        self._class_mapper = class_mapper
 
     def __getattr__(self, key):
         return self._el.findtext(key) or ''
 
     @property
     def css_class(self):
-        return self._class_mapping.get(getattr(self, 'class'), '')
+        return self._class_mapper.map(self._el)
 
 
 def result_sort_key(r):
-    return (r.category, r.package, r.version, getattr(r, 'class'), r.msg)
+    return (r.category, r.package, r.version, getattr(r, 'class'))
 
 
-def get_results(input_paths, class_mapping):
+def get_results(input_paths, class_mapping, excludes):
+    mapper = ClassMapping(class_mapping, excludes)
     for input_path in input_paths:
         if input_path == '-':
             input_path = sys.stdin
         checks = lxml.etree.parse(input_path).getroot()
         for r in checks:
-            yield Result(r, class_mapping)
+            yield Result(r, mapper)
 
 
 def split_result_group(it):
@@ -88,6 +102,8 @@ def main(*args):
             help='Output staging class reports (can be combined with --warning and --error)')
     p.add_argument('-w', '--warning', action='store_true',
             help='Output warning class reports (can be combined with --staging and --error)')
+    p.add_argument('-x', '--excludes',
+            help='JSON file specifying existing exceptions to staging warnings')
     p.add_argument('files', nargs='+',
             help='Input XML files')
     args = p.parse_args(args)
@@ -95,6 +111,11 @@ def main(*args):
     conf_path = os.path.join(os.path.dirname(__file__), 'pkgcheck2html.conf.json')
     with io.open(conf_path, 'r', encoding='utf8') as f:
         class_mapping = json.load(f)
+
+    excludes = {}
+    if args.excludes is not None:
+        with open(args.excludes) as f:
+            excludes = json.load(f)
 
     cls = set()
     if args.error:
@@ -107,7 +128,8 @@ def main(*args):
     if not cls:
         cls.add('err')
 
-    results = sorted(get_results(args.files, class_mapping), key=result_sort_key)
+    results = sorted(get_results(args.files, class_mapping, excludes),
+                     key=result_sort_key)
     # filter and group the results
     results = find_of_class(results, cls)
 

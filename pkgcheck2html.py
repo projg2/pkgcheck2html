@@ -17,17 +17,30 @@ import lxml.etree
 import jinja2
 
 
-class Result(object):
-    def __init__(self, el, class_mapping):
-        self._el = el
+class ClassMapping(object):
+    def __init__(self, class_mapping, excludes):
         self._class_mapping = class_mapping
+        self._excludes = excludes
+
+    def map(self, el):
+        cls, cat, pkg, ver = (el.findtext(x, '')
+                for x in ('class', 'category', 'package', 'version'))
+        if cls in self._excludes.get(cat, {}).get(pkg, {}).get(ver, []):
+            return ''
+        return self._class_mapping.get(cls, '')
+
+
+class Result(object):
+    def __init__(self, el, class_mapper):
+        self._el = el
+        self._class_mapper = class_mapper
 
     def __getattr__(self, key):
         return self._el.findtext(key) or ''
 
     @property
     def css_class(self):
-        return self._class_mapping.get(getattr(self, 'class'), '')
+        return self._class_mapper.map(self._el)
 
     @property
     def verbose(self):
@@ -38,13 +51,14 @@ def result_sort_key(r):
     return (r.category, r.package, r.version, getattr(r, 'class'))
 
 
-def get_results(input_paths, class_mapping, verbose, pkg_filter):
+def get_results(input_paths, class_mapping, excludes, verbose, pkg_filter):
+    mapper = ClassMapping(class_mapping, excludes)
     for input_path in input_paths:
         if input_path == '-':
             input_path = sys.stdin
         checks = lxml.etree.parse(input_path).getroot()
         for r in checks:
-            r = Result(r, class_mapping)
+            r = Result(r, mapper)
             if r.verbose and not verbose:
                 continue
             if not pkg_filter(r):
@@ -164,6 +178,8 @@ def main(*args):
             help='Timestamp for results (git ISO8601-like UTC)')
     p.add_argument('-v', '--verbose', action='store_true',
             help='Enable verbose reports')
+    p.add_argument('-x', '--excludes',
+            help='JSON file specifying existing exceptions to staging warnings')
     p.add_argument('files', nargs='+',
             help='Input XML files')
     args = p.parse_args(args)
@@ -171,6 +187,11 @@ def main(*args):
     conf_path = os.path.join(os.path.dirname(__file__), 'pkgcheck2html.conf.json')
     with io.open(conf_path, 'r', encoding='utf8') as f:
         class_mapping = json.load(f)
+
+    excludes = {}
+    if args.excludes is not None:
+        with open(args.excludes) as f:
+            excludes = json.load(f)
 
     jenv = jinja2.Environment(
             loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
@@ -199,8 +220,8 @@ def main(*args):
         maint_filter = lambda x: (bool(match.intersection(
             maints['/'.join((x.category, x.package))])))
 
-    results = sorted(get_results(args.files, class_mapping, args.verbose,
-                                 pkg_filter=maint_filter),
+    results = sorted(get_results(args.files, class_mapping, excludes,
+                                 args.verbose, pkg_filter=maint_filter),
                      key=result_sort_key)
 
     types = {}
