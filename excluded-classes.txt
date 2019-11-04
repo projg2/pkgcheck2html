@@ -1,0 +1,15 @@
+-c AbsoluteSymlink
+-c BadInsIntoDir
+-c DeprecatedEclass
+-c DuplicateFiles
+-c ExecutableFile
+-c HomepageInSrcUri
+-c MissingPackageRevision
+-c MissingSlotDep
+-c MissingTestRestrict
+-c MissingUnpackerDep
+-c MissingUseDepDefault
+-c ObsoleteUri
+-c TarballAvailable
+-c UnderscoreInUseFlag
+-c UnnecessarySlashStrip
