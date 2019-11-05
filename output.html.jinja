@@ -70,15 +70,7 @@
 								{% endif %}
 								<tr{{ class_str }}>
 									<td>{{ g[2] if loop.index == 1 else "" }}</td>
-									<td>
-										{% if doc_uri %}
-											<a href="{{ doc_uri }}#{{ rx.class.lower() }}">
-										{% endif %}
-										{{ rx.class }}
-										{% if doc_uri %}
-											</a>
-										{% endif %}
-									</td>
+									<td>{{ rx.class }}</td>
 									<td>{{ rx.msg|escape }}</td>
 								</tr>
 							{% endfor %}
