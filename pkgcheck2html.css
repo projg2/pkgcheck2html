@@ -89,18 +89,18 @@ th
 	color: #23457F;
 }
 
-th.h2
+th.c
 {
 	font-size: 120%;
 }
 
-th.h3
+th.p
 {
 	padding-left: 1em;
 	font-size: 110%;
 }
 
-th.maint
+th.m
 {
 	padding-top: 0;
 	padding-left: 1.1em;
@@ -137,33 +137,33 @@ td:hover
 	background-color: #eee;
 }
 
-tr.err td
+tr.e td
 {
 	background-color: #7E0202;
 	color: white;
 }
 
-tr.err td:hover
+tr.e td:hover
 {
 	background-color: #DA0404;
 }
 
-tr.staging td
+tr.s td
 {
 	background-color: #DEDE00;
 }
 
-tr.staging td:hover
+tr.s td:hover
 {
 	background-color: yellow;
 }
 
-tr.warn td
+tr.w td
 {
 	background-color: orange;
 }
 
-tr.warn td:hover
+tr.w td:hover
 {
 	background-color: #FFBB3E;
 }

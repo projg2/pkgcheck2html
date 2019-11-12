@@ -45,7 +45,7 @@
 				</tr>
 				{% for g, r in results %}
 					{% set h2_id = g[0] if g else "global" %}
-					<tr><th colspan="3" class="h2" id="{{ h2_id }}">
+					<tr><th colspan="3" class="c" id="{{ h2_id }}">
 						{{ g[0] if g else "Global-scope results" }}
 						<small><a href="#{{ h2_id }}">¶</a></small>
 					</th></tr>
@@ -53,15 +53,15 @@
 					{% for g, r in r %}
 						{% if g[0] %}
 							{% set h3_id = g[0] + "/" + g[1] if g[1] else "_cat" %}
-							<tr><th colspan="3" class="h3" id="{{ h3_id }}">
+							<tr><th colspan="3" class="p" id="{{ h3_id }}">
 								{{ g[1] if g[1] else "Category results" }}
 								<small><a href="#{{ h3_id }}">¶</a></small>
 							</th></tr>
 							{% if g[1] %}
 								{% set maint = maints[h3_id] %}
 								{% if maint %}
-									<tr><th colspan="3" class="maint">
-										Maintainer: {{ maints[h3_id] | join(', ') | escape }}
+									<tr><th colspan="3" class="m">
+										m: {{ maints[h3_id] | join(', ') | escape }}
 									</th></tr>
 								{% endif %}
 							{% endif %}
@@ -71,7 +71,7 @@
 							{% for rx in r %}
 								{% set class_str = "" %}
 								{% if rx.css_class %}
-									{% set class_str = ' class="' + rx.css_class + '"' %}
+									{% set class_str = ' class="' + rx.css_class[0] + '"' %}
 								{% endif %}
 								<tr{{ class_str }}>
 									<td>{{ g[2] if loop.index == 1 else "" }}</td>
