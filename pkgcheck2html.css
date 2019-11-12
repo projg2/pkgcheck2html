@@ -112,13 +112,14 @@ th:target
 	background-color: #dfd;
 }
 
-th small
+th.c a, th.p a
 {
+	font-size: 75%;
 	padding-left: .5em;
 	visibility: hidden;
 }
 
-th:hover small
+th:hover a
 {
 	visibility: visible;
 }

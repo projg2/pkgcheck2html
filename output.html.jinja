@@ -47,7 +47,7 @@
 					{% set h2_id = g[0] if g else "global" %}
 					<tr><th colspan="3" class="c" id="{{ h2_id }}">
 						{{ g[0] if g else "Global-scope results" }}
-						<small><a href="#{{ h2_id }}">¶</a></small>
+						<a href="#{{ h2_id }}">¶</a>
 					</th></tr>
 
 					{% for g, r in r %}
@@ -55,7 +55,7 @@
 							{% set h3_id = g[0] + "/" + g[1] if g[1] else "_cat" %}
 							<tr><th colspan="3" class="p" id="{{ h3_id }}">
 								{{ g[1] if g[1] else "Category results" }}
-								<small><a href="#{{ h3_id }}">¶</a></small>
+								<a href="#{{ h3_id }}">¶</a>
 							</th></tr>
 							{% if g[1] %}
 								{% set maint = maints[h3_id] %}
