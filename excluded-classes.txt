@@ -1,5 +1,6 @@
 -c AbsoluteSymlink
 -c DeprecatedEclass
+-c DeprecatedInsinto
 -c DeprecatedPkg
 -c DuplicateFiles
 -c ExecutableFile
