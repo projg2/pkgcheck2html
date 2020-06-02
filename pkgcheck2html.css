@@ -21,6 +21,10 @@ address
 	margin: 1em;
 }
 
+.rev {
+	text-align: right;
+}
+
 .nav
 {
 	width: 20%;

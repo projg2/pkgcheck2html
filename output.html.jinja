@@ -37,6 +37,13 @@
 		{% endif %}
 
 		<div class="content">
+			{% if revision %}
+			<p class="rev">
+				Report revision: {{ revision }};
+				<a href="../output.html">current report</a>
+			</p>
+			{% endif %}
+
 			<table>
 				<tr>
 					<th>Version</th>

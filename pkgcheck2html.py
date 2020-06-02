@@ -174,6 +174,8 @@ def main(*args):
             help='Recursively match projects whose member is maintainer')
     p.add_argument('-r', '--repo', default='/usr/portage',
             help='Repository path to get metadata.xml from')
+    p.add_argument('-R', '--revision',
+            help='Revision to display in output')
     p.add_argument('-t', '--timestamp', default=None,
             help='Timestamp for results (git ISO8601-like UTC)')
     p.add_argument('-v', '--verbose', action='store_true',
@@ -244,6 +246,7 @@ def main(*args):
         ts=ts,
         maints=maints,
         doc_uri=args.doc_uri,
+        revision=args.revision,
     )
 
     if args.output == '-':
