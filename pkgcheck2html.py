@@ -172,6 +172,8 @@ def main(*args):
             help='Output HTML file ("-" for stdout)')
     p.add_argument('-p', '--projects', action='store_true',
             help='Recursively match projects whose member is maintainer')
+    p.add_argument('-P', '--pkg',
+            help='Filter by package(s) (separated by `,`)')
     p.add_argument('-r', '--repo', default='/usr/portage',
             help='Repository path to get metadata.xml from')
     p.add_argument('-R', '--revision',
@@ -221,9 +223,16 @@ def main(*args):
             match = frozenset(['maintainer-needed'])
         maint_filter = lambda x: (bool(match.intersection(
             maints['/'.join((x.category, x.package))])))
+    pkg_filter = lambda x: True
+    if args.pkg:
+        packages = frozenset(args.pkg.split(','))
+        pkg_filter = lambda x: (bool(packages.intersection(
+            ['/'.join((x.category, x.package))])))
 
+    combined_filter = lambda x: maint_filter(x) and pkg_filter(x)
     results = sorted(get_results(args.files, class_mapping, excludes,
-                                 args.verbose, pkg_filter=maint_filter),
+                                 args.verbose,
+                                 pkg_filter=combined_filter),
                      key=result_sort_key)
 
     types = {}
