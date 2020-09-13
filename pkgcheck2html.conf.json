@@ -25,6 +25,7 @@
     "ConflictingChksums": "err",
     "DeadUrl": "warn",
     "DeprecatedChksum": "warn",
+    "DeprecatedDep": "warn",
     "DeprecatedEapi": "verbose",
     "DeprecatedEapiCommand": "",
     "DeprecatedEclass": "warn",
