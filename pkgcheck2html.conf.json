@@ -147,7 +147,7 @@
     "RedundantVersion": "verbose",
     "RequiredUseDefaults": "",
     "SSLCertificateError": "",
-    "SizeViolation": "",
+    "SizeViolation": "warn",
     "SourcingError": "err",
     "StableRequest": "verbose",
     "StaleProxyMaintProject": "warn",
