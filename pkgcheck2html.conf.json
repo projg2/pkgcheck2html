@@ -179,7 +179,7 @@
     "StaticSrcUri": "",
     "TarballAvailable": "warn",
     "TrailingEmptyLine": "warn",
-    "UncheckableDep": "",
+    "UncheckableDep": "err",
     "UnderscoreInUseFlag": "warn",
     "UnknownCategories": "err",
     "UnknownCategoryDirs": "warn",
