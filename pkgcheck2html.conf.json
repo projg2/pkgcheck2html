@@ -170,7 +170,7 @@
     "ProxyWithoutProxied": "warn",
     "PythonCompatUpdate": "",
     "PythonEclassError": "err",
-    "PythonGHDistfileSuffix": "warn",
+    "PythonGHDistfileSuffix": "",
     "PythonMissingDeps": "warn",
     "PythonMissingRequiredUse": "warn",
     "PythonRuntimeDepInAnyR1": "warn",
