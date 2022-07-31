@@ -194,7 +194,7 @@
     "StaleProxyMaintProject": "warn",
     "StaticSrcUri": "",
     "TarballAvailable": "warn",
-    "TotalSizeViolation": "staging",
+    "TotalSizeViolation": "warn",
     "TrailingEmptyLine": "warn",
     "UncheckableDep": "err",
     "UnderscoreInUseFlag": "warn",
