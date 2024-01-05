@@ -163,7 +163,7 @@
     "PkgMetadataXmlIndentation": "warn",
     "PkgMetadataXmlInvalidCatRef": "warn",
     "PkgMetadataXmlInvalidPkgRef": "warn",
-    "PkgMissingMetadataXml": "warn",
+    "PkgMissingMetadataXml": "err",
     "PotentialGlobalUse": "",
     "PotentialLocalUse": "",
     "PotentialStable": "verbose",
